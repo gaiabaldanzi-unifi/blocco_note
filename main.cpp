@@ -5,6 +5,7 @@ oltre che di una collezione specifica. Usare Observer per indicare quante note s
 
 #include <iostream>
 #include <string>
+#include <list>
 using namespace std;
 
 class Observer {
@@ -20,27 +21,19 @@ public:
     virtual void notify()=0;
 };
 
-
-class Collezione {
-private:
-    string Nome;
-};
-
-class Note: public Subject {
+class Note {
 private:
     string Titolo;
     string Testo;
     bool Bloccata;
-    Collezione* C;
     bool Importante;
 public:
-    Note (const string &ti, const string &te, Collezione* cc, bool im): Titolo(ti), Testo(te), Bloccata(false), C(cc), Importante(im) {};
+    Note (const string &ti, const string &te, bool im): Titolo(ti), Testo(te), Bloccata(false), Importante(im) {};
     ~Note() {};
 
     const string getTitolo() const { return Titolo; }
     const string getTesto() const { return Testo; }
     bool isBloccata() const { return Bloccata; }
-    //string getCollezione() const { return Collezione; }
     //const bool isImportante() const { return Importante; }
 
     void bloccata(bool a) {
@@ -51,9 +44,21 @@ public:
         if (!Bloccata) Testo = te;
         else cout<<"Impossibile modificare il testo, la nota è bloccata"<<endl;
     }
-    //void setCollezione(const string &co) { if (!Bloccata) Collezione = co;  }
+
     void setTitolo(const string &ti) {
         if (!Bloccata) Titolo = ti;
         else cout<<"Impossibile modificare il titolo, la nota è bloccata"<<endl;
     }
+};
+
+class Collezione: public Subject {
+private:
+    string Nome;
+    list <Note*> NoteCollezionate;
+public:
+    Collezione (const string &no): Nome(no) {};
+    ~Collezione() {};
+
+    const string getNome() const { return Nome; }
+    void setNome(const string &no) { Nome = no; }
 };
