@@ -55,10 +55,32 @@ class Collezione: public Subject {
 private:
     string Nome;
     list <Note*> NoteCollezionate;
+    list <Observer*> Obs;
 public:
     Collezione (const string &no): Nome(no) {};
     ~Collezione() {};
 
     const string getNome() const { return Nome; }
     void setNome(const string &no) { Nome = no; }
+
+    void aggiungiNota(Note *n) {
+        NoteCollezionate.push_back(n);
+        notify();
+    }
+    void rimuoviNota(Note *n) {
+        NoteCollezionate.remove(n);
+        notify();
+    }
+
+    void notify() override {
+        for (Observer *o : Obs) {
+            o->update();
+        }
+    }
+    void attach(Observer *o) override {
+        Obs.push_back(o);
+    }
+    void detach(Observer *o) override {
+        Obs.remove(o);
+    }
 };
