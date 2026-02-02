@@ -11,14 +11,14 @@ using namespace std;
 class Observer {
 public:
     virtual ~Observer() {};
-    virtual void update(bool b, const string &n, const string &c)=0;
+    virtual void update(bool b, const string &n, const string &c, int i)=0;
 };
 class Subject {
 public:
     virtual ~Subject() {};
     virtual void attach(Observer *o)=0;
     virtual void detach(Observer *o)=0;
-    virtual void notify(bool b, const string &n, const string &c)=0;
+    virtual void notify(bool b, const string &n, const string &c, int i)=0;
 };
 
 class Note {
@@ -37,7 +37,7 @@ public:
     //const bool isImportante() const { return Importante; }
 
     void bloccata(bool a) {
-        if (Bloccata = a) {cout<<"La nota è già ad "<<a<<endl;}
+        if (Bloccata == a) {cout<<"La nota è già ad "<<a<<endl;}
         else Bloccata = a;
     }
     void setTesto(const string &te) {
@@ -64,17 +64,25 @@ public:
     void setNome(const string &no) { Nome = no; }
 
     void aggiungiNota(Note *n) {
-        NoteCollezionate.push_back(n);
-        notify(1, n->getTitolo(), Nome);
+        if (n->isBloccata()) { cout<<"Impossibile aggiungere la nota "<<n->getTitolo()<<", è bloccata"<<endl; }
+        else {
+            NoteCollezionate.push_back(n);
+            int i=NoteCollezionate.size();
+            notify(1, n->getTitolo(), Nome, i);
+        }
     }
     void rimuoviNota(Note *n) {
-        NoteCollezionate.remove(n);
-        notify(0, n->getTitolo(), Nome);
+        if (n->isBloccata()) { cout<<"Impossibile rimuovere la nota "<<n->getTitolo()<<", è bloccata"<<endl; }
+        else {
+            NoteCollezionate.remove(n);
+            int i=NoteCollezionate.size();
+            notify(0, n->getTitolo(), Nome, i);
+        }
     }
 
-    void notify(bool b, const string &n, const string &c) override {
+    void notify(bool b, const string &n, const string &c, int i) override {
         for (Observer *o : Obs) {
-            o->update(b, n, c);
+            o->update(b, n, c, i);
         }
     }
     void attach(Observer *o) override {
@@ -86,19 +94,15 @@ public:
 };
 
 class ContatoreNote: public Observer {
-private:
-    int count;
 public:
-    ContatoreNote(): count(0) {};
+    ContatoreNote() {};
     ~ContatoreNote() {};
-    void update(bool b, const string &n, const string &c) override {
+    void update(bool b, const string &n, const string &c, int i) override {
         if (b) {
-            count++;
-            cout<<"Nella collezione "<<c<<" è stata aggiunta la nota "<<n<<". Ora ci sono "<<count<<" note."<<endl;
+            cout<<"Nella collezione "<<c<<" è stata aggiunta la nota "<<n<<". Ora ci sono "<<i<<" note."<<endl;
         }
         else {
-            count--;
-            cout<<"Nella collezione "<<c<<" è stata rimossa la nota "<<n<<". Ora ci sono "<<count<<" note."<<endl;
+            cout<<"Nella collezione "<<c<<" è stata rimossa la nota "<<n<<". Ora ci sono "<<i<<" note."<<endl;
         }
     }
 };
