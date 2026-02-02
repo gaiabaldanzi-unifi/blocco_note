@@ -11,14 +11,14 @@ using namespace std;
 class Observer {
 public:
     virtual ~Observer() {};
-    virtual void update()=0;
+    virtual void update(bool b, const string &n, const string &c)=0;
 };
 class Subject {
 public:
     virtual ~Subject() {};
     virtual void attach(Observer *o)=0;
     virtual void detach(Observer *o)=0;
-    virtual void notify()=0;
+    virtual void notify(bool b, const string &n, const string &c)=0;
 };
 
 class Note {
@@ -65,16 +65,16 @@ public:
 
     void aggiungiNota(Note *n) {
         NoteCollezionate.push_back(n);
-        notify();
+        notify(1, n->getTitolo(), Nome);
     }
     void rimuoviNota(Note *n) {
         NoteCollezionate.remove(n);
-        notify();
+        notify(0, n->getTitolo(), Nome);
     }
 
-    void notify() override {
+    void notify(bool b, const string &n, const string &c) override {
         for (Observer *o : Obs) {
-            o->update();
+            o->update(b, n, c);
         }
     }
     void attach(Observer *o) override {
@@ -82,5 +82,23 @@ public:
     }
     void detach(Observer *o) override {
         Obs.remove(o);
+    }
+};
+
+class ContatoreNote: public Observer {
+private:
+    int count;
+public:
+    ContatoreNote(): count(0) {};
+    ~ContatoreNote() {};
+    void update(bool b, const string &n, const string &c) override {
+        if (b) {
+            count++;
+            cout<<"Nella collezione "<<c<<" è stata aggiunta la nota "<<n<<". Ora ci sono "<<count<<" note."<<endl;
+        }
+        else {
+            count--;
+            cout<<"Nella collezione "<<c<<" è stata rimossa la nota "<<n<<". Ora ci sono "<<count<<" note."<<endl;
+        }
     }
 };
