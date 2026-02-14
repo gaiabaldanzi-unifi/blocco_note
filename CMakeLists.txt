@@ -3,4 +3,14 @@ project(blocconote)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(blocconote main.cpp)
+add_executable(blocconote main.cpp
+        subject.h
+        subject.cpp
+        observer.h
+        observer.cpp
+        Note.h
+        Note.cpp
+        Collezione.h
+        Collezione.cpp
+        ContatoreNote.h
+        ContatoreNote.cpp)
