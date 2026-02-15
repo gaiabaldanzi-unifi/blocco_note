@@ -23,10 +23,14 @@ public:
     virtual ~Collezione();
 
     const string& getNome() const {return Nome;}
+    const list<Note*>& getNoteCollezionate() const {return NoteCollezionate;}
     void setNome(const string &no) {Nome = no;}
 
     void aggiungiNota(Note *n);
     void rimuoviNota(Note *n);
+    void modificaNota(Note *n);
+
+    void visualizzaNote() const;
 
     void notify(bool b, const string &n, const string &c, int i) override;
     void attach(Observer *o) override;

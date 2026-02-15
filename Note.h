@@ -22,11 +22,12 @@ public:
     const string getTitolo() const {return Titolo;}
     const string getTesto() const {return Testo;}
     bool isBloccata() const {return Bloccata;}
-    //const bool isImportante() const {return Importante;}
+    const bool isImportante() const {return Importante;}
 
-    void bloccata(bool a);
+    void setBloccata(bool a);
     void setTesto(const string &te);
     void setTitolo(const string &ti);
+    void setImportante(bool a);
 };
 
 #endif //BLOCCONOTE_NOTE_H

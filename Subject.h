@@ -17,5 +17,4 @@ public:
     virtual void notify(bool b, const string &n, const string &c, int i)=0;
 };
 
-
 #endif //BLOCCONOTE_SUBJECT_H

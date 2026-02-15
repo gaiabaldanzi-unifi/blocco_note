@@ -6,7 +6,6 @@
 #define BLOCCONOTE_CONTATORENOTE_H
 
 #include "Observer.h"
-#include "ContatoreNote.h"
 
 #include <iostream>
 using namespace std;
